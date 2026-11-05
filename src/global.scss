@@ -1,0 +1,332 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import "@ionic/angular/css/display.css";
+
+/* Optional CSS utils that can be commented out */
+@import "@ionic/angular/css/padding.css";
+@import "@ionic/angular/css/float-elements.css";
+@import "@ionic/angular/css/text-alignment.css";
+@import "@ionic/angular/css/text-transformation.css";
+@import "@ionic/angular/css/flex-utils.css";
+
+/**
+ * Ionic Dark Mode
+ * -----------------------------------------------------
+ * For more info, please see:
+ * https://ionicframework.com/docs/theming/dark-mode
+ */
+
+/* The app always uses the dark theme */
+@import '@ionic/angular/css/palettes/dark.always.css';
+
+/* ------------------------------------------------------------------ */
+/* App colors                                                          */
+/* ------------------------------------------------------------------ */
+:root,
+.ios body,
+.md body {
+  --ion-color-primary: #ff4d6d;
+  --ion-color-primary-rgb: 255, 77, 109;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #e04460;
+  --ion-color-primary-tint: #ff5f7c;
+
+  --ion-background-color: #0f1115;
+  --ion-background-color-rgb: 15, 17, 21;
+  --ion-toolbar-background: #15181e;
+  --ion-tab-bar-background: #15181e;
+  --ion-item-background: #1b1f27;
+
+  --app-card: #1b1f27;
+  --app-border: #2a2f3a;
+}
+
+a {
+  color: var(--ion-color-primary);
+}
+
+.muted {
+  color: var(--ion-color-medium);
+}
+.small-text {
+  font-size: 0.85rem;
+}
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 20px 0 10px;
+}
+.center-box {
+  text-align: center;
+  padding: 40px 16px;
+}
+.big-icon {
+  font-size: 56px;
+  color: var(--ion-color-primary);
+}
+.error-box {
+  background: rgba(var(--ion-color-danger-rgb), 0.15);
+  border: 1px solid rgba(var(--ion-color-danger-rgb), 0.5);
+  color: var(--ion-color-danger-tint);
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin: 10px 0;
+}
+
+/* ---------------- Login / register / forms ---------------- */
+.auth-box {
+  max-width: 420px;
+  margin: 0 auto;
+}
+.brand {
+  text-align: center;
+  margin: 40px 0 24px;
+  ion-icon {
+    font-size: 64px;
+    color: var(--ion-color-primary);
+  }
+  h1 {
+    font-weight: 800;
+    margin: 8px 0 4px;
+  }
+}
+.form-field {
+  margin-bottom: 14px;
+}
+.photo-picker {
+  display: flex;
+  padding: 0;
+  background: transparent;
+  width: 120px;
+  height: 120px;
+  margin: 16px auto 4px;
+  border-radius: 50%;
+  border: 2px dashed var(--ion-color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
+  ion-icon {
+    font-size: 42px;
+    color: var(--ion-color-primary);
+  }
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+.avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: var(--app-border);
+}
+
+/* ---------------- Movie cards ---------------- */
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 14px;
+}
+.movie-row {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  .movie-card {
+    width: 120px;
+    flex-shrink: 0;
+  }
+}
+.movie-card {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  img,
+  .no-poster {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    border-radius: 10px;
+    background: var(--app-card);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+  }
+}
+.movie-card-title {
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-top: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.movie-card-year {
+  font-size: 0.8rem;
+  color: var(--ion-color-medium);
+}
+.no-poster {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 8px;
+  color: var(--ion-color-medium);
+  background: var(--app-card);
+  &.small {
+    width: 60px;
+    height: 90px;
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+}
+
+/* ---------------- Movie details ---------------- */
+.details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.details-poster {
+  width: 100%;
+  max-width: 300px;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 14px;
+  margin: 0 auto;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+  &.preview {
+    display: block;
+    max-width: 160px;
+    margin-bottom: 16px;
+  }
+}
+.details-info {
+  flex: 1 1 300px;
+  h1 {
+    font-weight: 800;
+    margin: 0;
+  }
+}
+
+/* ---------------- Lists (favorites, users) ---------------- */
+.list-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 12px;
+  background: var(--app-card);
+  color: inherit;
+  text-decoration: none;
+  img:not(.avatar) {
+    width: 60px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+}
+.list-card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.below {
+  opacity: 0.55;
+}
+
+/* ---------------- Matching ---------------- */
+.match-card {
+  background: var(--app-card);
+  border: 1px solid var(--app-border);
+  border-radius: 14px;
+  padding: 14px;
+  margin-top: 14px;
+}
+.match-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.match-name {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.match-score {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--ion-color-primary);
+}
+.match-reasons {
+  margin: 10px 0 6px;
+  padding-left: 18px;
+  li {
+    margin-bottom: 4px;
+  }
+}
+
+/* ---------------- Admin ---------------- */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.stat {
+  background: var(--app-card);
+  border-radius: 12px;
+  padding: 16px;
+  color: var(--ion-color-medium);
+  span {
+    display: block;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--ion-text-color, #fff);
+  }
+}
+.admin-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+  margin-bottom: 12px;
+  border-radius: 12px;
+  background: var(--app-card);
+  color: inherit;
+  text-decoration: none;
+  ion-icon {
+    font-size: 32px;
+    color: var(--ion-color-primary);
+  }
+  div {
+    display: flex;
+    flex-direction: column;
+  }
+}
