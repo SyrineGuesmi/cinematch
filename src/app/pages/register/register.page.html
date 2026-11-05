@@ -1,0 +1,81 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/login"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Create account</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="auth-box">
+    <button type="button" class="photo-picker" (click)="takePhoto()">
+      @if (photo()) {
+        <img [src]="photo()" alt="Profile picture" />
+      } @else {
+        <ion-icon name="camera"></ion-icon>
+      }
+    </button>
+    <p class="ion-text-center muted">{{ photo() ? 'Tap to retake your photo' : 'Tap to take your profile picture' }}</p>
+
+    <form (ngSubmit)="register()">
+      <ion-input
+        class="form-field"
+        label="First name"
+        labelPlacement="floating"
+        fill="outline"
+        name="firstName"
+        [(ngModel)]="firstName"
+      ></ion-input>
+      <ion-input
+        class="form-field"
+        label="Last name"
+        labelPlacement="floating"
+        fill="outline"
+        name="lastName"
+        [(ngModel)]="lastName"
+      ></ion-input>
+      <ion-input
+        class="form-field"
+        label="Age"
+        labelPlacement="floating"
+        fill="outline"
+        type="number"
+        name="age"
+        [(ngModel)]="age"
+      ></ion-input>
+      <ion-input
+        class="form-field"
+        label="Email"
+        labelPlacement="floating"
+        fill="outline"
+        type="email"
+        name="email"
+        [(ngModel)]="email"
+      ></ion-input>
+      <ion-input
+        class="form-field"
+        label="Password (min. 6 characters)"
+        labelPlacement="floating"
+        fill="outline"
+        type="password"
+        name="password"
+        [(ngModel)]="password"
+      ></ion-input>
+
+      @if (error()) {
+        <div class="error-box">{{ error() }}</div>
+      }
+
+      <ion-button expand="block" type="submit" [disabled]="loading()">
+        @if (loading()) {
+          <ion-spinner name="crescent"></ion-spinner>
+        } @else {
+          Sign up
+        }
+      </ion-button>
+    </form>
+
+    <p class="ion-text-center muted">Already registered? <a routerLink="/login">Log in</a></p>
+  </div>
+</ion-content>

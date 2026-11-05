@@ -1,0 +1,48 @@
+<ion-content class="ion-padding">
+  <div class="auth-box">
+    <div class="brand">
+      <ion-icon name="film"></ion-icon>
+      <h1>CineMatch</h1>
+      <p>Discover movies and the people who love them too.</p>
+    </div>
+
+    @if (auth.notice()) {
+      <div class="error-box">{{ auth.notice() }}</div>
+    }
+
+    <form (ngSubmit)="login()">
+      <ion-input
+        class="form-field"
+        label="Email"
+        labelPlacement="floating"
+        fill="outline"
+        type="email"
+        name="email"
+        [(ngModel)]="email"
+      ></ion-input>
+      <ion-input
+        class="form-field"
+        label="Password"
+        labelPlacement="floating"
+        fill="outline"
+        type="password"
+        name="password"
+        [(ngModel)]="password"
+      ></ion-input>
+
+      @if (error()) {
+        <div class="error-box">{{ error() }}</div>
+      }
+
+      <ion-button expand="block" type="submit" [disabled]="loading()">
+        @if (loading()) {
+          <ion-spinner name="crescent"></ion-spinner>
+        } @else {
+          Log in
+        }
+      </ion-button>
+    </form>
+
+    <p class="ion-text-center muted">No account yet? <a routerLink="/register">Create one</a></p>
+  </div>
+</ion-content>

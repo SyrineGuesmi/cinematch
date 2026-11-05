@@ -1,0 +1,69 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>My Profile</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  @if (auth.profile(); as p) {
+    <div class="auth-box">
+      <button type="button" class="photo-picker" (click)="changePhoto()">
+        <img [src]="p.photoUrl" alt="Profile picture" />
+      </button>
+      <p class="ion-text-center muted small-text">Tap the photo to take a new one</p>
+
+      <h2 class="ion-text-center">{{ p.firstName }} {{ p.lastName }}</h2>
+      <p class="ion-text-center muted">
+        {{ p.email }}
+        @if (p.role === 'admin') {
+          <ion-badge color="primary">Admin</ion-badge>
+        }
+      </p>
+
+      <form (ngSubmit)="saveInfo()">
+        <ion-input
+          class="form-field"
+          label="First name"
+          labelPlacement="floating"
+          fill="outline"
+          name="firstName"
+          [(ngModel)]="firstName"
+        ></ion-input>
+        <ion-input
+          class="form-field"
+          label="Last name"
+          labelPlacement="floating"
+          fill="outline"
+          name="lastName"
+          [(ngModel)]="lastName"
+        ></ion-input>
+        <ion-input
+          class="form-field"
+          label="Age"
+          labelPlacement="floating"
+          fill="outline"
+          type="number"
+          name="age"
+          [(ngModel)]="age"
+        ></ion-input>
+
+        @if (error()) {
+          <div class="error-box">{{ error() }}</div>
+        }
+
+        <ion-button expand="block" type="submit" [disabled]="saving()">
+          @if (saving()) {
+            <ion-spinner name="crescent"></ion-spinner>
+          } @else {
+            Save changes
+          }
+        </ion-button>
+      </form>
+
+      <ion-button expand="block" fill="outline" color="medium" (click)="auth.logout()">
+        <ion-icon slot="start" name="log-out"></ion-icon>
+        Log out
+      </ion-button>
+    </div>
+  }
+</ion-content>

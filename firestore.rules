@@ -1,0 +1,63 @@
+rules_version = '2';
+
+// Copy this into Firebase console > Firestore Database > Rules (or deploy with the Firebase CLI).
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+    function myProfile() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+    // Logged in AND account not deactivated
+    function isActive() {
+      return signedIn()
+        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        && myProfile().isActive == true;
+    }
+    function isAdmin() {
+      return isActive() && myProfile().role == 'admin';
+    }
+
+    // ---------------- users ----------------
+    match /users/{uid} {
+      // Own profile is always readable (needed to detect deactivation).
+      // Other profiles are readable by active users (matching page, admin).
+      allow read: if (signedIn() && request.auth.uid == uid) || isActive();
+
+      // Registration: you can only create YOUR profile, as a normal active user.
+      allow create: if signedIn() && request.auth.uid == uid
+        && request.resource.data.role == 'user'
+        && request.resource.data.isActive == true;
+
+      // You can edit your own profile but not your role / active status.
+      // The admin can edit anybody (activate / deactivate).
+      allow update: if (isActive() && request.auth.uid == uid
+          && request.resource.data.role == resource.data.role
+          && request.resource.data.isActive == resource.data.isActive)
+        || isAdmin();
+
+      allow delete: if false; // accounts are deactivated, never deleted
+    }
+
+    // ---------------- movies (admin catalog) ----------------
+    match /movies/{movieId} {
+      allow read: if isActive();
+      allow write: if isAdmin();
+    }
+
+    // ---------------- favorites ----------------
+    // Document id = "<userId>_<movieId>"
+    match /favorites/{favId} {
+      // Readable by active users (needed to compute matching scores).
+      allow read: if isActive();
+      // Only the owner can add / remove items in their playlist.
+      allow create: if isActive()
+        && request.resource.data.userId == request.auth.uid
+        && favId == request.auth.uid + '_' + request.resource.data.movieId;
+      allow delete: if isActive() && resource.data.userId == request.auth.uid;
+      allow update: if false;
+    }
+  }
+}
