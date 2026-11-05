@@ -1,0 +1,69 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Matching</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <p class="muted small-text">
+    Users whose taste matches yours by more than {{ threshold }}%. Score = movies in common ({{
+      percent(weights.movies)
+    }}%) + genres ({{ percent(weights.genres) }}%) + actors ({{ percent(weights.actors) }}%) + release years ({{
+      percent(weights.years)
+    }}%).
+  </p>
+
+  <ion-toggle [checked]="showAll()" (ionChange)="showAll.set($event.detail.checked)" labelPlacement="end">
+    <ion-label>Show all users with their score</ion-label>
+  </ion-toggle>
+
+  @if (error()) {
+    <div class="error-box">{{ error() }}</div>
+  }
+  @if (loading()) {
+    <div class="center-box"><ion-spinner name="crescent"></ion-spinner></div>
+  } @else if (myFavoritesCount() === 0) {
+    <div class="center-box muted">Add some movies to your favorites to find matching users.</div>
+  } @else if (!visibleRows().length) {
+    <div class="center-box muted">No user matches more than {{ threshold }}% yet.</div>
+  } @else {
+    @for (row of visibleRows(); track row.user.uid) {
+      <div class="match-card" [class.below]="row.match.score <= threshold">
+        <div class="match-header">
+          <img class="avatar" [src]="row.user.photoUrl" alt="" />
+          <div class="match-name">
+            <strong>{{ row.user.firstName }} {{ row.user.lastName }}</strong>
+            <span class="muted small-text">{{ row.user.age }} years old</span>
+          </div>
+          <div class="match-score">{{ row.match.score }}%</div>
+        </div>
+
+        <ul class="match-reasons">
+          @if (row.match.commonMovies.length) {
+            <li>
+              <strong>{{ row.match.commonMovies.length }} movie(s) in common:</strong>
+              {{ short(row.match.commonMovies) }}
+            </li>
+          }
+          @if (row.match.commonGenres.length) {
+            <li><strong>Genres:</strong> {{ short(row.match.commonGenres) }}</li>
+          }
+          @if (row.match.commonActors.length) {
+            <li><strong>Actors:</strong> {{ short(row.match.commonActors, 3) }}</li>
+          }
+          @if (row.match.myAvgYear !== null && row.match.theirAvgYear !== null) {
+            <li>
+              <strong>Eras:</strong> you ≈ {{ row.match.myAvgYear.toFixed(0) }}, them ≈
+              {{ row.match.theirAvgYear.toFixed(0) }}
+            </li>
+          }
+        </ul>
+
+        <div class="match-bars small-text muted">
+          Movies {{ percent(row.match.parts.movies) }}% · Genres {{ percent(row.match.parts.genres) }}% · Actors
+          {{ percent(row.match.parts.actors) }}% · Years {{ percent(row.match.parts.years) }}%
+        </div>
+      </div>
+    }
+  }
+</ion-content>
