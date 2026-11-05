@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>My Favorites</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  @if (error()) {
+    <div class="error-box">{{ error() }}</div>
+  }
+  @if (loading()) {
+    <div class="center-box"><ion-spinner name="crescent"></ion-spinner></div>
+  } @else if (!favorites().length) {
+    <div class="center-box muted">
+      <ion-icon name="heart" class="big-icon"></ion-icon>
+      <p>Your playlist is empty.<br />Open a movie and tap "Add to favorites".</p>
+      <ion-button fill="outline" routerLink="/tabs/home">Discover movies</ion-button>
+    </div>
+  } @else {
+    <p class="muted">{{ favorites().length }} movie(s) in your playlist</p>
+    @for (fav of favorites(); track fav.movieId) {
+      <a class="list-card" [routerLink]="['/tabs/favorites/movie', fav.movieId]">
+        @if (fav.poster) {
+          <img [src]="fav.poster" [alt]="fav.title" />
+        } @else {
+          <div class="no-poster small"></div>
+        }
+        <div class="list-card-body">
+          <strong>{{ fav.title }}</strong>
+          <span class="muted">{{ yearOf(fav.releaseDate) }}</span>
+          <span class="muted small-text">{{ fav.genres.join(', ') }}</span>
+        </div>
+        <ion-button fill="clear" color="danger" (click)="confirmRemove(fav, $event)" aria-label="Remove">
+          <ion-icon slot="icon-only" name="trash"></ion-icon>
+        </ion-button>
+      </a>
+    }
+  }
+</ion-content>

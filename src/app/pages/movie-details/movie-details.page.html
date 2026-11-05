@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ movie()?.title ?? 'Movie' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  @if (loading()) {
+    <div class="center-box"><ion-spinner name="crescent"></ion-spinner></div>
+  } @else if (error()) {
+    <div class="center-box">
+      <div class="error-box">{{ error() }}</div>
+    </div>
+  } @else if (movie(); as m) {
+    <div class="details">
+      @if (m.poster) {
+        <img class="details-poster" [src]="m.poster" [alt]="m.title" />
+      } @else {
+        <div class="details-poster no-poster">{{ m.title }}</div>
+      }
+
+      <div class="details-info">
+        <h1>{{ m.title }}</h1>
+        <p class="muted">{{ yearOf(m.releaseDate) || 'Unknown year' }}</p>
+
+        <div>
+          @for (genre of m.genres; track genre) {
+            <ion-chip color="primary" outline>{{ genre }}</ion-chip>
+          }
+        </div>
+
+        <ion-button
+          expand="block"
+          [fill]="isFavorite() ? 'outline' : 'solid'"
+          [disabled]="saving()"
+          (click)="toggleFavorite()"
+        >
+          <ion-icon slot="start" [name]="isFavorite() ? 'heart-dislike' : 'heart'"></ion-icon>
+          {{ isFavorite() ? 'Remove from favorites' : 'Add to favorites' }}
+        </ion-button>
+
+        <h2 class="section-title">Overview</h2>
+        <p>{{ m.overview || 'No overview available.' }}</p>
+
+        @if (m.actors.length) {
+          <h2 class="section-title">Cast</h2>
+          <div>
+            @for (actor of m.actors; track actor) {
+              <ion-chip>{{ actor }}</ion-chip>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  }
+</ion-content>

@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Discover</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar placeholder="Search a movie..." [debounce]="500" (ionInput)="onSearch($event)"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  @if (catalog().length) {
+    <h2 class="section-title">Added by CineMatch</h2>
+    <div class="movie-row">
+      @for (movie of catalog(); track movie.id) {
+        <a class="movie-card" [routerLink]="['/tabs/home/movie', movie.id]">
+          @if (movie.poster) {
+            <img [src]="movie.poster" [alt]="movie.title" loading="lazy" />
+          } @else {
+            <div class="no-poster">{{ movie.title }}</div>
+          }
+          <div class="movie-card-title">{{ movie.title }}</div>
+          <div class="movie-card-year">{{ yearOf(movie.releaseDate) }}</div>
+        </a>
+      }
+    </div>
+  }
+
+  <h2 class="section-title">{{ searchText() ? 'Results for "' + searchText() + '"' : 'Popular now' }}</h2>
+
+  @if (loading()) {
+    <div class="center-box"><ion-spinner name="crescent"></ion-spinner></div>
+  } @else if (error()) {
+    <div class="center-box">
+      <div class="error-box">{{ error() }}</div>
+      <ion-button fill="outline" (click)="load()">Retry</ion-button>
+    </div>
+  } @else if (!movies().length) {
+    <div class="center-box muted">No movies found.</div>
+  } @else {
+    <div class="movie-grid">
+      @for (movie of movies(); track movie.id) {
+        <a class="movie-card" [routerLink]="['/tabs/home/movie', movie.id]">
+          @if (movie.poster) {
+            <img [src]="movie.poster" [alt]="movie.title" loading="lazy" />
+          } @else {
+            <div class="no-poster">{{ movie.title }}</div>
+          }
+          <div class="movie-card-title">{{ movie.title }}</div>
+          <div class="movie-card-year">{{ yearOf(movie.releaseDate) }}</div>
+        </a>
+      }
+    </div>
+
+    <ion-infinite-scroll [disabled]="!hasMore()" (ionInfinite)="loadMore($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  }
+</ion-content>
